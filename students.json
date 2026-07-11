@@ -1,0 +1,52 @@
+[
+    {
+        "id": "S001",
+        "name": "Rajesh Kumar",
+        "class": "10-A"
+    },
+    {
+        "id": "S002",
+        "name": "Priya Sharma",
+        "class": "10-A"
+    },
+    {
+        "id": "S003",
+        "name": "Amit Singh",
+        "class": "10-B"
+    },
+    {
+        "id": "S004",
+        "name": "Sneha Patel",
+        "class": "10-B"
+    },
+    {
+        "id": "S005",
+        "name": "Vikram Reddy",
+        "class": "10-A"
+    },
+    {
+        "id": "S006",
+        "name": "Ananya Iyer",
+        "class": "10-C"
+    },
+    {
+        "id": "S007",
+        "name": "Karan Joshi",
+        "class": "10-B"
+    },
+    {
+        "id": "S008",
+        "name": "Meera Nair",
+        "class": "10-A"
+    },
+    {
+        "id": "S009",
+        "name": "Arjun Desai",
+        "class": "10-C"
+    },
+    {
+        "id": "S010",
+        "name": "Fatima Khan",
+        "class": "10-B"
+    }
+]

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance System</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ================= HEADER ================= -->
+    <header class="header">
+        <div class="header-content">
+
+            <h1>🎓 Student Attendance System</h1>
+
+            <div class="header-info">
+
+                <div class="date-time">
+                    <span class="date">📅 {{ today }}</span>
+                    <span class="time" id="currentTime">
+                        ⏰ {{ current_time }}
+                    </span>
+                </div>
+
+                <div class="header-links">
+    <a href="/view_records" class="btn btn-secondary">
+        📊 View Records
+    </a>
+
+    <a href="/manage_students" class="btn btn-primary">
+        👨‍🎓 Manage Students
+    </a>
+</div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-content">
+
+        <div class="attendance-card">
+
+            <div class="card-header">
+    <div>
+        <h2>📝 Mark Attendance</h2>
+
+        <input
+            type="text"
+            id="studentSearch"
+            placeholder="🔍 Search by ID, Name or Class..."
+            onkeyup="searchStudents()"
+            class="search-box">
+    </div>
+
+    <div class="stats-summary" id="liveStats">
+        <span class="total">Total: {{ students|length }}</span>
+        <span class="present" id="presentCount">Present: 0</span>
+        <span class="absent" id="absentCount">Absent: 0</span>
+    </div>
+</div>
+
+            <form id="attendanceForm"
+                  action="{{ url_for('mark_attendance') }}"
+                  method="POST">
+
+                <input
+                    type="hidden"
+                    name="date"
+                    value="{{ today }}">
+
+                <div class="table-container">
+
+                    <table class="attendance-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>#</th>
+                                <th>Registration ID</th>
+                                <th>Student Name</th>
+                                <th>Class</th>
+                                <th>Attendance</th>
+                                <th>Time</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        {% for student in students %}
+
+                            <tr class="student-row"
+                                data-id="{{ student.id }}">
+
+                                <td>{{ loop.index }}</td>
+
+                                <td>
+                                    <span class="badge">
+                                        {{ student.id }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <strong>{{ student.name }}</strong>
+                                </td>
+
+                                <td>{{ student.class }}</td>
+
+                                <td>
+
+                                    <div class="attendance-buttons">
+
+                                        <button
+                                            type="button"
+                                            class="btn-attendance present-btn"
+                                            onclick="setAttendance('{{ student.id }}','present')">
+
+                                            ✅ Present
+
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            class="btn-attendance absent-btn"
+                                            onclick="setAttendance('{{ student.id }}','absent')">
+
+                                            ❌ Absent
+
+                                        </button>
+
+                                    </div>
+
+                                    <input
+                                        type="hidden"
+                                        id="attendance_{{ student.id }}"
+                                        name="attendance_{{ student.id }}"
+                                        value="">
+
+                                </td>
+
+                                <td
+                                    class="time-cell"
+                                    id="time_{{ student.id }}">
+                                    —
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-large">
+
+                        📤 Submit Attendance
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        onclick="resetAttendance()">
+
+                        🔄 Reset All
+
+                    </button>
+
+                </div>
+
+            </form>
+            
+
+        </div>
+                <!-- ================= QUICK STATS ================= -->
+
+        <div class="quick-stats">
+
+            <div class="stat-card">
+                <div class="stat-icon">👨‍🎓</div>
+                <div class="stat-info">
+                    <h3>Total Students</h3>
+                    <p>{{ students|length }}</p>
+                </div>
+            </div>
+
+            <div class="stat-card"
+                 style="background: linear-gradient(135deg,#00b894,#00a884);">
+
+                <div class="stat-icon">✅</div>
+
+                <div class="stat-info">
+                    <h3>Present Today</h3>
+                    <p id="statPresent">0</p>
+                </div>
+
+            </div>
+
+            <div class="stat-card"
+                 style="background: linear-gradient(135deg,#ff6b6b,#c0392b);">
+
+                <div class="stat-icon">❌</div>
+
+                <div class="stat-info">
+                    <h3>Absent Today</h3>
+                    <p id="statAbsent">0</p>
+                </div>
+
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #6c5ce7, #4834d4);">
+              <div class="stat-icon">📊</div>
+                 <div class="stat-info">
+                    <h3>Attendance Rate</h3>
+                    <p id="attendanceRate">0%</p>
+               </div>
+             </div>
+
+        </div>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+        <p>
+            © 2026 Student Attendance System |
+            Built with ❤️ using Flask
+        </p>
+    </footer>
+
+</div>
+
+<script>
+
+function setAttendance(studentId, status){
+
+    document.getElementById("attendance_" + studentId).value = status;
+
+    const row = document.querySelector(
+        `tr[data-id="${studentId}"]`
+    );
+
+    const presentBtn = row.querySelector(".present-btn");
+    const absentBtn = row.querySelector(".absent-btn");
+
+    presentBtn.classList.remove("active");
+    absentBtn.classList.remove("active");
+
+    row.classList.remove(
+        "selected-present",
+        "selected-absent"
+    );
+
+    if(status==="present"){
+        presentBtn.classList.add("active");
+        row.classList.add("selected-present");
+    }
+    else{
+        absentBtn.classList.add("active");
+        row.classList.add("selected-absent");
+    }
+
+    const now = new Date();
+
+    document.getElementById("time_" + studentId).textContent =
+        now.toLocaleTimeString();
+
+    updateStats();
+
+}
+
+function updateStats(){
+
+    let present = 0;
+    let absent = 0;
+
+    document.querySelectorAll(".student-row").forEach(function(row){
+
+        const id = row.dataset.id;
+
+        const value =
+        document.getElementById(
+        "attendance_"+id).value;
+
+        if(value==="present"){
+            present++;
+        }
+
+        if(value==="absent"){
+            absent++;
+        }
+
+    });
+
+    document.getElementById("presentCount").textContent =
+        "Present: " + present;
+
+    document.getElementById("absentCount").textContent =
+        "Absent: " + absent;
+
+    document.getElementById("statPresent").textContent =
+        present;
+
+    document.getElementById("statAbsent").textContent =
+        absent;
+
+}
+
+function resetAttendance(){
+
+    if(!confirm("Reset all attendance?")){
+        return;
+    }
+
+    document.querySelectorAll(".student-row").forEach(function(row){
+
+        const id = row.dataset.id;
+
+        document.getElementById(
+        "attendance_"+id).value="";
+
+        row.classList.remove(
+            "selected-present",
+            "selected-absent"
+        );
+
+        row.querySelector(".present-btn")
+        .classList.remove("active");
+
+        row.querySelector(".absent-btn")
+        .classList.remove("active");
+
+        document.getElementById(
+        "time_"+id).textContent="—";
+
+    });
+
+    updateStats();
+
+}
+// Search students by ID, Name or Class
+function searchStudents() {
+
+    const input = document.getElementById("studentSearch");
+    const filter = input.value.toUpperCase();
+
+    const rows = document.querySelectorAll(".student-row");
+
+    rows.forEach(row => {
+
+        const studentId = row.cells[1].innerText.toUpperCase();
+        const studentName = row.cells[2].innerText.toUpperCase();
+        const studentClass = row.cells[3].innerText.toUpperCase();
+
+        if (
+            studentId.includes(filter) ||
+            studentName.includes(filter) ||
+            studentClass.includes(filter)
+        ) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+
+    });
+
+}
+
+
+
+document.addEventListener("DOMContentLoaded",function(){
+
+    updateStats();
+
+    document.getElementById("attendanceForm")
+    .addEventListener("submit",function(e){
+
+        const inputs =
+        document.querySelectorAll(
+        'input[name^="attendance_"]'
+        );
+
+        let filled = false;
+
+        inputs.forEach(function(input){
+
+            if(input.value!==""){
+                filled = true;
+            }
+
+        });
+
+        if(!filled){
+
+            e.preventDefault();
+
+            alert(
+            "Please mark attendance before submitting."
+            );
+
+        }
+
+    });
+
+});
+
+</script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

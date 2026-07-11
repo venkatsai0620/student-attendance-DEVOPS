@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Records</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1>📊 Attendance Records</h1>
+                <div style="margin:15px 0;">
+    <a href="/" class="btn btn-secondary">
+        🏠 Home
+    </a>
+
+    <a href="/manage_students" class="btn btn-primary">
+        👨‍🎓 Manage Students
+    </a>
+</div>
+                <div class="header-info">
+                    <form action="/search_records" method="GET" class="search-form">
+    <input
+        type="text"
+        name="search"
+        placeholder="🔍 Search by Student ID, Name or Date"
+        value="{{ search if search else '' }}"
+        class="search-input"
+    >
+
+    <button type="submit" class="btn btn-primary">
+        Search
+    </button>
+
+    <a href="/view_records" class="btn btn-secondary">
+        Clear
+    </a>
+</form>
+                    <a href="/" class="btn btn-secondary">🏠 Back to Attendance</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="records-card">
+                {% if records %}
+                    {% for record in records %}
+                    <div class="day-record">
+                        <div class="day-header">
+                            <h3>📅 {{ record.date }}</h3>
+                            <div class="day-stats">
+                                <span class="badge present-badge">✅ Present: {{ record.present }}</span>
+                                <span class="badge absent-badge">❌ Absent: {{ record.absent }}</span>
+                                <span class="badge total-badge">👨‍🎓 Total: {{ record.total }}</span>
+                            </div>
+                        </div>
+                        <div class="day-details">
+                            <table class="record-table">
+                                <thead>
+                                    <tr>
+                                        <th>Registration ID</th>
+                                        <th>Student Name</th>
+                                        <th>Status</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for student_id, data in record.details.items() %}
+                                    <tr class="status-{{ data.status }}">
+                                        <td><span class="badge">{{ student_id }}</span></td>
+                                        <td>{{ data.name or 'Unknown' }}</td>
+                                        <td>
+                                            {% if data.status == 'present' %}
+                                            <span class="status-badge present">✅ Present</span>
+                                            {% else %}
+                                            <span class="status-badge absent">❌ Absent</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ data.time or '—' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <h3>No Records Found</h3>
+                        <p>Start marking attendance to see records here!</p>
+                        <a href="/" class="btn btn-primary">Mark Attendance Now</a>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="records-card">
+    <div class="card-header">
+        <h2>📈 Student Attendance Statistics</h2>
+    </div>
+
+    <div class="table-container">
+        <table class="attendance-table">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Present</th>
+                    <th>Absent</th>
+                    <th>Attendance %</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for sid, stat in student_stats.items() %}
+
+                <tr>
+                    <td>{{ sid }}</td>
+                    <td>{{ stat.name }}</td>
+                    <td style="color:green;font-weight:bold;">
+                        {{ stat.present }}
+                    </td>
+                    <td style="color:red;font-weight:bold;">
+                        {{ stat.absent }}
+                    </td>
+                    <td>
+                        {{ stat.percentage }}%
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 Student Attendance System | Built with ❤️ using Flask</p>
+        </footer>
+    </div>
+
+    <style>
+        .records-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .day-record {
+            margin-bottom: 30px;
+            border: 1px solid #eee;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .day-header {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .day-header h3 {
+            margin: 0;
+            color: #2d3436;
+        }
+        .day-stats {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .present-badge { background: #d4f5e9; color: #00b894; }
+        .absent-badge { background: #ffe5e5; color: #ff6b6b; }
+        .total-badge { background: #e3f0ff; color: #4a90d9; }
+        .day-details {
+            padding: 20px;
+            overflow-x: auto;
+        }
+        .record-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .record-table th {
+            text-align: left;
+            padding: 10px;
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2d3436;
+        }
+        .record-table td {
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .record-table tr.status-present {
+            background: rgba(0, 184, 148, 0.05);
+        }
+        .record-table tr.status-absent {
+            background: rgba(255, 107, 107, 0.05);
+        }
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .status-badge.present { background: #d4f5e9; color: #00b894; }
+        .status-badge.absent { background: #ffe5e5; color: #ff6b6b; }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: #2d3436;
+        }
+        .empty-state p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 768px) {
+            .day-header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,106 @@
+{
+  "2026-07-09": {
+    "S001": {
+      "status": "present",
+      "time": "09:20:23 PM",
+      "name": "Rajesh Kumar"
+    },
+    "S002": {
+      "status": "absent",
+      "time": "09:20:23 PM",
+      "name": "Priya Sharma"
+    },
+    "S003": {
+      "status": "present",
+      "time": "09:20:23 PM",
+      "name": "Amit Singh"
+    },
+    "S004": {
+      "status": "present",
+      "time": "09:20:23 PM",
+      "name": "Sneha Patel"
+    },
+    "S005": {
+      "status": "present",
+      "time": "09:20:23 PM",
+      "name": "Vikram Reddy"
+    },
+    "S006": {
+      "status": "present",
+      "time": "09:20:23 PM",
+      "name": "Ananya Iyer"
+    },
+    "S007": {
+      "status": "present",
+      "time": "09:20:23 PM",
+      "name": "Karan Joshi"
+    },
+    "S008": {
+      "status": "present",
+      "time": "09:20:23 PM",
+      "name": "Meera Nair"
+    },
+    "S009": {
+      "status": "present",
+      "time": "09:20:23 PM",
+      "name": "Arjun Desai"
+    },
+    "S010": {
+      "status": "present",
+      "time": "09:20:23 PM",
+      "name": "Fatima Khan"
+    }
+  },
+  "2026-07-10": {
+    "S001": {
+      "status": "present",
+      "time": "03:16:43 PM",
+      "name": "Rajesh Kumar"
+    },
+    "S002": {
+      "status": "present",
+      "time": "03:16:43 PM",
+      "name": "Priya Sharma"
+    },
+    "S003": {
+      "status": "present",
+      "time": "03:16:43 PM",
+      "name": "Amit Singh"
+    },
+    "S004": {
+      "status": "absent",
+      "time": "03:16:43 PM",
+      "name": "Sneha Patel"
+    },
+    "S005": {
+      "status": "present",
+      "time": "03:16:43 PM",
+      "name": "Vikram Reddy"
+    },
+    "S006": {
+      "status": "present",
+      "time": "03:16:43 PM",
+      "name": "Ananya Iyer"
+    },
+    "S007": {
+      "status": "absent",
+      "time": "03:16:43 PM",
+      "name": "Karan Joshi"
+    },
+    "S008": {
+      "status": "present",
+      "time": "03:16:43 PM",
+      "name": "Meera Nair"
+    },
+    "S009": {
+      "status": "present",
+      "time": "03:16:43 PM",
+      "name": "Arjun Desai"
+    },
+    "S010": {
+      "status": "present",
+      "time": "03:16:43 PM",
+      "name": "Fatima Khan"
+    }
+  }
+}
