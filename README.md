@@ -1,85 +1,203 @@
 # Student Attendance Management System
 
-A web-based Student Attendance Management System developed using Flask, HTML, CSS, JavaScript, and JSON.
+A web-based Student Attendance Management System developed using Flask, HTML, CSS, JavaScript, and JSON. The project demonstrates a complete DevOps CI/CD workflow using GitHub, Jenkins, and Docker.
 
-The application allows users to manage student attendance, view attendance records, analyze attendance summaries, and manage student information.
+## 📌 Project Overview
 
-## Features
+The Student Attendance Management System helps manage student attendance digitally. Users can mark students as present or absent, search for students, manage student information, view attendance summaries, and analyze previous attendance records.
 
-- Mark students as Present or Absent
-- Search students by ID, name, or class
-- View attendance records
-- View attendance summary
-- Add new students
-- Edit student details
-- Delete students
-- Custom delete confirmation popup
-- Dark mode user interface
-- Responsive design
+The application is containerized using Docker and automatically built and deployed through a Jenkins CI/CD pipeline whenever source code changes are pushed to GitHub.
 
-## Technologies Used
+## ✨ Features
 
-- Python
-- Flask
-- HTML5
-- CSS3
-- JavaScript
-- JSON
-- Git
-- GitHub
-- Docker
-- Jenkins
+* Mark students as Present or Absent
+* Search students by ID, name, or class
+* View attendance summary
+* Display attendance percentage
+* View previous attendance records
+* View individual student attendance statistics
+* Add new students
+* Delete students
+* Prevent duplicate Student IDs
+* Live attendance statistics
+* Dark dashboard user interface
+* Responsive web design
 
-## Project Structure
+## 🛠️ Technologies Used
 
-ATTENDANCE-DEVOPS/
-- static/
-  - script.js
-  - style.css
-- templates/
-  - index.html
-  - manage_students.html
-  - records.html
-  - summary.html
-- app.py
-- students.json
-- attendance_records.json
-- requirements.txt
-- README.md
+* Python
+* Flask
+* HTML5
+* CSS3
+* JavaScript
+* JSON
+* Git
+* GitHub
+* Docker
+* Jenkins
 
-## Installation
+## 📂 Project Structure
 
-Clone the repository:
+```text
+attendance-devops/
+│
+├── static/
+│   ├── script.js
+│   └── style.css
+│
+├── templates/
+│   ├── index.html
+│   ├── manage_students.html
+│   ├── records.html
+│   └── summary.html
+│
+├── screenshots/
+│
+├── app.py
+├── students.json
+├── attendance_records.json
+├── requirements.txt
+├── Dockerfile
+├── Jenkinsfile
+└── README.md
+```
 
-git clone <repository-url>
+## 🚀 Installation and Setup
 
-Install the required dependencies:
+### 1. Clone the Repository
 
+```bash
+git clone https://github.com/venkatsai0620/student-attendance-DEVOPS.git
+```
+
+### 2. Navigate to the Project Directory
+
+```bash
+cd student-attendance-DEVOPS
+```
+
+### 3. Install Required Dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-Run the Flask application:
+### 4. Run the Flask Application
 
+```bash
 python app.py
+```
 
-Open the application in the browser:
+### 5. Open the Application
 
+Open the following address in your browser:
+
+```text
 http://localhost:5000
+```
 
-## DevOps Deployment
+## 🐳 Docker Deployment
 
-The project is designed to demonstrate a DevOps deployment workflow using:
+Build the Docker image:
 
-- Git and GitHub for version control
-- Docker for containerization
-- Jenkins for Continuous Integration and Continuous Deployment
+```bash
+docker build -t student-attendance-app .
+```
 
-## Author
+Run the Docker container:
 
-Venkata Sai Pithani
+```bash
+docker run -d -p 5000:5000 --name attendance-container student-attendance-app
+```
 
-## Project
+The application will be available at:
 
-Student Attendance Management System - DevOps Project
-## CI/CD Pipeline
+```text
+http://localhost:5000
+```
 
-This project uses Jenkins and Docker for automated CI/CD deployment.
+## 🔄 CI/CD Pipeline
+
+This project uses Jenkins and Docker to implement an automated CI/CD deployment workflow.
+
+The pipeline performs the following stages:
+
+1. Jenkins detects source code changes from GitHub.
+2. Jenkins downloads the latest source code.
+3. Docker builds a new application image.
+4. The existing Docker container is stopped.
+5. The old container is removed.
+6. A new Docker container is deployed using the latest image.
+7. The updated Flask application becomes available on port 5000.
+
+### CI/CD Workflow
+
+```text
+Developer
+    ↓
+Git Commit and Push
+    ↓
+GitHub Repository
+    ↓
+Jenkins Pipeline Trigger
+    ↓
+Checkout Source Code
+    ↓
+Build Docker Image
+    ↓
+Stop and Remove Old Container
+    ↓
+Run New Docker Container
+    ↓
+Updated Application Deployed
+```
+
+## 📸 Application Screenshots
+
+### Home Page
+
+![Home Page](screenshots/home_page.png)
+
+### Attendance Marking
+
+![Attendance Marking](screenshots/home_page1.png)
+
+### Attendance Summary
+
+![Attendance Summary](screenshots/attendance_summary.png)
+
+### Manage Students
+
+![Manage Students](screenshots/manage_students1.png)
+
+### Attendance Records
+
+![Attendance Records](screenshots/records.png)
+
+### Search Student
+
+![Search Student](screenshots/search_image.png)
+
+## 🎯 DevOps Tools and Purpose
+
+| Tool    | Purpose                       |
+| ------- | ----------------------------- |
+| Git     | Source code version control   |
+| GitHub  | Remote source code repository |
+| Jenkins | CI/CD pipeline automation     |
+| Docker  | Application containerization  |
+| Flask   | Backend web framework         |
+
+## 📊 Project Outcome
+
+The project successfully demonstrates the development and automated deployment of a Flask-based Student Attendance Management System.
+
+The Jenkins CI/CD pipeline automatically detects source code changes, builds a new Docker image, removes the previous application container, and deploys the latest version of the application.
+
+## 👨‍💻 Author
+
+**Venkata Sai Pithani**
+
+## 📚 Project Title
+
+**Student Attendance Management System – DevOps Project**
