@@ -80,3 +80,6 @@ Venkata Sai Pithani
 ## Project
 
 Student Attendance Management System - DevOps Project
+## CI/CD Pipeline
+
+This project uses Jenkins and Docker for automated CI/CD deployment.
