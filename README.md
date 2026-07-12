@@ -196,8 +196,15 @@ The Jenkins CI/CD pipeline automatically detects source code changes, builds a n
 
 ## 👨‍💻 Author
 
-**Venkata Sai Pithani**
+Venkata Sai Pithani
 
 ## 📚 Project Title
 
-**Student Attendance Management System – DevOps Project**
+Student Attendance Management System – DevOps Project
+
+## Live Application
+
+The Student Attendance Management System is deployed on Render.
+
+Live Website:
+https://student-attendance-devops.onrender.com
